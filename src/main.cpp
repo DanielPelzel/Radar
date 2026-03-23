@@ -9,28 +9,31 @@ float seconds;
 float distance_m;
 float distance_cm;
 
+int trig = 8;
+int echo = 7;
+
 
 void setup() {
-    pinMode(13, OUTPUT);
-    pinMode(12, INPUT);
+    pinMode(trig, OUTPUT);
+    pinMode(echo, INPUT);
     Serial.begin(9600);
 }
 
 void loop() {
 
     // Sicherstellen, dass der Pin vorher LOW ist
-    digitalWrite(13, LOW);
+    digitalWrite(trig, LOW);
     delayMicroseconds(2);
 
     //Sending Input signal (10 microseconds)
 
-    digitalWrite(13, HIGH);
+    digitalWrite(trig, HIGH);
     delayMicroseconds(10);
-    digitalWrite(13, LOW);
+    digitalWrite(trig, LOW);
 
     //ultrasonic wave time
 
-    seconds = pulseIn(12, HIGH) * 1e-6;
+    seconds = pulseIn(echo, HIGH) * 1e-6;
 
 
     //time to distance calc.
