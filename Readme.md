@@ -1,12 +1,17 @@
 # Radar Scanner
 
 ## Fuction 
-Measures distance throuh ultrasonic sensor and creates a polar plot in Python
+ultrasonic sensor measures distances and visualizes them in real-time using Python.
 
 ## Hardware 
--Arduino R3 Clone  
--3D-Prited Parts  
--ultra sonic sensor   
--servo motor   
+**Microcontgroller** Arduino clone  
+**Sensor** HC-SR04 Ultrasonic Sensor   
+**Actuator** SG90 Servo Motor   
+**Structure** 3D print  
+
+## Software 
+C++  
+Python 
+**Librarys:** pyserialm matplotlib, Arduino 
 
 
