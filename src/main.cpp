@@ -8,9 +8,11 @@
 #include <Arduino.h>
 #include <Servo.h>
 
+Servo servo;
+
 const uint8_t trig = 8; ///< Trigger pin for ultrasonic sensor (output)
 const uint8_t echo = 7; ///< echo pin for ultrasonic sensor (input)
-const uint8_t PWM = 9; ///< PWN-Signal for SG90 Servo
+const uint8_t servo_pin = 9; ///< PWN-Signal for SG90 Servo
 
 
 /**
@@ -44,7 +46,26 @@ float measure_distance() {
     return distance_cm;
 }
 
-void turn() {
+/**
+ * @brief sends important data to SerialMonitor
+ * @param angle
+ * @param distance
+ */
+void sendData(int angle, float distance) {
+    Serial.print(angle);
+    Serial.print(", ");
+    Serial.println(distance);
+}
+
+/**
+ * @brief moves the servo to a defined angle
+ * @param angle
+ */
+void turn(int angle) {
+
+
+
+    servo.write(angle);
 
 }
 
@@ -53,15 +74,34 @@ void turn() {
 void setup() {
     pinMode(trig, OUTPUT);
     pinMode(echo, INPUT);
-    pinMode(servo, OUTPUT);
-
+    pinMode(servo_pin, OUTPUT);
+    servo.attach(9, 544, 2831);
+    
     Serial.begin(9600);
+
+
+
 }
 
 void loop() {
 
-    float distance_cm = measure_distance();
-    Serial.println(distance_cm);
-    delay(1000);
+    for (int angle = 10; angle < 145; angle++){
+        turn(angle);
+
+        delay(30);
+        float distance = measure_distance();
+        sendData(angle, distance);
+    }
+
+    for (int angle = 145; angle > 10; angle--){
+        turn(angle);
+
+        delay(30);
+        float distance = measure_distance();
+        sendData(angle, distance);
+    }
+
 }
+
+
 
