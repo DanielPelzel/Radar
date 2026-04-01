@@ -10,8 +10,10 @@ ultrasonic sensor measures distances and visualizes them in real-time using Pyth
 **Structure:** 3D print  
 
 ## Software 
-C++  
-Python   
+-SolidWorks
+-KiCad 
+-C++  
+-Python   
 **Librarys:** pyserialm matplotlib, Arduino, time, serial,  
 **Backend:**  QT5Agg  
 
