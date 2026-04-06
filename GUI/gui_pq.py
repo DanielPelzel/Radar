@@ -11,6 +11,7 @@ class Worker(QRunnable):
     def __init__(self):
         super().__init__()
         self.signals = WorkerSignals()
+        self.running = True
 
     @pyqtSlot()
     def run(self):
@@ -20,7 +21,8 @@ class Worker(QRunnable):
 
         ser.reset_input_buffer()
 
-        while True:
+
+        while self.running:
             line = ser.readline().decode("utf-8", errors = "ignore").strip()
 
             if line and "," in line:
@@ -40,6 +42,8 @@ class mainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.threadPool = QThreadPool()
+
         #Daten empfangen
         self.distanzlabel = self.makeLabel("Distanz: -- ")
         self.winkellabel = self.makeLabel("Winkel: -- ")
@@ -53,11 +57,18 @@ class mainWindow(QMainWindow):
         #Linkes Platzhalter Widget
         layout.addWidget(self.makeLabel("Platzhalter Radar"))
 
+        #Button erstellen
+        startButton = QPushButton("Start")
+        stopButton = QPushButton("Stop")
+
+        startButton.clicked.connect(self.start)
+        stopButton.clicked.connect(self.stop)
+
         #Rechtes Platzhalter Widget
         layoutRight.addWidget(self.distanzlabel)
         layoutRight.addWidget(self.winkellabel)
-        layoutRight.addWidget(QPushButton("Start"))
-        layoutRight.addWidget(QPushButton("Stop"))
+        layoutRight.addWidget(startButton)
+        layoutRight.addWidget(stopButton)
 
         #Rechtes Layout anhägen
         layout.addLayout(layoutRight)
@@ -67,10 +78,6 @@ class mainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-        self.threadPool = QThreadPool()
-        worker = Worker()
-        worker.signals.data.connect(self.updateData)
-        self.threadPool.start(worker)
 
         self.setStyleSheet("""
                                    QMainWindow {
@@ -79,6 +86,14 @@ class mainWindow(QMainWindow):
 
                                    QWidget{
                                    background-color: black;
+                                   color: lime;
+                                   }
+                                   
+                                   QLabel {
+                                   border: 1px solid lime; 
+                                   border-radius: 5px;
+                                   padding: 5px;
+                                   background-color: #1a1a1a;
                                    color: lime;
                                    }
 
@@ -95,6 +110,15 @@ class mainWindow(QMainWindow):
                                    }
 
                 """)
+
+    def start(self):
+        self.worker = Worker()
+        self.worker.signals.data.connect(self.updateData)
+        self.threadPool.start(self.worker)
+
+    def stop(self):
+        if hasattr(self, "worker"):
+            self.worker.running = False
 
     def makeLabel(self, text):
         label = QLabel(text)
