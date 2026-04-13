@@ -262,4 +262,10 @@ octave-workspace
 .gcc-flags.json
 .pio
 
+build/
+dist/
+*.spec
+__pycache__/
+*.pyc
+
 # End of https://www.toptal.com/developers/gitignore/api/clion,matlab,platformio,c++,kicad,macos
