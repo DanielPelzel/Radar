@@ -98,38 +98,36 @@ class mainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-
         self.setStyleSheet("""
-                                   QMainWindow {
-                                   background-color: black;
-                                   }
+            QMainWindow {
+                background-color: #2d4a2d;
+            }
 
-                                   QWidget{
-                                   background-color: black;
-                                   color: lime;
-                                   }
-                                   
-                                   QLabel {
-                                   border: 1px solid lime; 
-                                   border-radius: 5px;
-                                   padding: 5px;
-                                   background-color: #1a1a1a;
-                                   color: lime;
-                                   }
+            QWidget {
+                background-color: #2d4a2d;
+                color: #c8e6c8;
+            }
 
-                                   QPushButton {
-                                    background-color: #1a1a1a;
-                                    border: 1px solid lime; 
-                                    padding: 5px;
-                                    color: lime;
-                                    border-radius: 5px;
-                                   }
+            QLabel {
+                border: 1px solid #7ec850;
+                border-radius: 5px;
+                padding: 5px;
+                background-color: #3a5e3a;
+                color: #c8e6c8;
+            }
 
-                                   QPushButton:pressed {
-                                   background-color: #2a2a2a;
-                                   }
+            QPushButton {
+                background-color: #3a5e3a;
+                border: 1px solid #7ec850;
+                padding: 5px;
+                color: #c8e6c8;
+                border-radius: 5px;
+            }
 
-                """)
+            QPushButton:pressed {
+                background-color: #4a7a4a;
+            }
+        """)
 
     def start(self):
         """create a new worker thread and start it"""
@@ -153,7 +151,7 @@ class mainWindow(QMainWindow):
 
     def updateData(self, theta, r):
         """update the GUI with the new data"""
-        
+
         self.distanzlabel.setText("Distanz: " + str(r))
         self.winkellabel.setText(f"Winkel: {np.rad2deg(theta):.1f}°")
 
