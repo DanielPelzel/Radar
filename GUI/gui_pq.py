@@ -62,8 +62,7 @@ class mainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-
-        self.resize(500, 220)
+        self.resize(800, 400)
         self.setMinimumSize(500, 220)
         self.setWindowTitle("Radar")
 
@@ -79,7 +78,7 @@ class mainWindow(QMainWindow):
         layout = QHBoxLayout()
         layoutRight = QVBoxLayout()
 
-        #Linkes Platzhalter Widget
+        #Linkes  Widget
         self.radar = RadarWidget()
         layout.addWidget(self.radar)
 
@@ -91,6 +90,11 @@ class mainWindow(QMainWindow):
         stopButton.clicked.connect(self.stop)
 
         #Rechtes Platzhalter Widget
+        rightPlaceholder = QWidget()
+        rightPlaceholder.setLayout(layoutRight)
+        rightPlaceholder.setFixedWidth(200)
+        layout.addWidget(rightPlaceholder)
+
         layoutRight.addWidget(self.distanzlabel)
         layoutRight.addWidget(self.winkellabel)
         layoutRight.addWidget(startButton)
@@ -135,11 +139,14 @@ class mainWindow(QMainWindow):
             }
         """)
 
+
+
     def start(self):
         """create a new worker thread and start it"""
 
         self.worker = Worker()
         self.worker.signals.data.connect(self.updateData)
+        self.worker.signals.data.connect(self.radar.updateData)
         self.threadPool.start(self.worker)
 
     def stop(self):
@@ -157,9 +164,10 @@ class mainWindow(QMainWindow):
 
     def updateData(self, theta, r):
         """update the GUI with the new data"""
-
+        print(f"theta_deg: {np.rad2deg(theta):.1f}, r: {r}")
         self.distanzlabel.setText("Distanz: " + str(r))
         self.winkellabel.setText(f"Winkel: {np.rad2deg(theta):.1f}°")
+
 
 app = QApplication([])
 app.setStyle(QStyleFactory.create('Fusion'))
