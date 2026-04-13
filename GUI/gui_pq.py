@@ -5,6 +5,7 @@ import numpy as np
 from PyQt5.QtCore import Qt, QObject, QRunnable, pyqtSignal, pyqtSlot, QThreadPool
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QApplication, QPushButton, QWidget, QStyleFactory
 import serial
+from RadarWidget import RadarWidget
 
 
 class Worker(QRunnable):
@@ -46,7 +47,6 @@ class Worker(QRunnable):
 
                     self.signals.data.emit(theta, r)
 
-
 class WorkerSignals(QObject):
     """
     Defines the signals available from a running worker thread.
@@ -62,6 +62,11 @@ class mainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+
+        self.resize(500, 220)
+        self.setMinimumSize(500, 220)
+        self.setWindowTitle("Radar")
+
         self.threadPool = QThreadPool()
 
         #Daten empfangen
@@ -75,7 +80,8 @@ class mainWindow(QMainWindow):
         layoutRight = QVBoxLayout()
 
         #Linkes Platzhalter Widget
-        layout.addWidget(self.makeLabel("Platzhalter Radar"))
+        self.radar = RadarWidget()
+        layout.addWidget(self.radar)
 
         #Button erstellen
         startButton = QPushButton("Start")
