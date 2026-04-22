@@ -70,10 +70,10 @@ class RadarWidget(QtWidgets.QWidget):
             painter.drawText(int(text_x) - 10, int(text_y) + 5 , f"{str(winkel)}°")
 
         #text distances
-        for i in range(1,5):
+        for i in range(1, 5):
             r_text = max_r // 4 * i
-
-            painter.drawText(cx-60, cy-r_text   , f"{str(r_text)}cm")
+            distanz_cm = i * 100  # 100, 200, 300, 400
+            painter.drawText(cx - 60, cy - r_text, f"{distanz_cm}cm")
 
 
         #Dots for life data
@@ -106,10 +106,6 @@ class RadarWidget(QtWidgets.QWidget):
         pen.setWidth(2)
         painter.setPen(pen)
         painter.drawLine(cx, cy, int(ox), int(oy))
-
-
-
-
 
         painter.end()
 
